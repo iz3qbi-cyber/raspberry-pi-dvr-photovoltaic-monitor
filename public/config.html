@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
     <title>Configurazione Sistema</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script>
         async function saveConfig() {
             const config = {
-                cameraIP: document.getElementById('cameraIP').value,
-                cameraPort: document.getElementById('cameraPort').value,
-                hvHost: document.getElementById('hvHost').value,
-                hvPort: document.getElementById('hvPort').value
+                cameras: []
             };
+            const cameraCount = document.querySelectorAll('.camera-config').length;
+            for (let i = 0; i < cameraCount; i++) {
+                const base = document.getElementById(`camera${i}`);
+                if (base) {
+                    config.cameras.push({
+                        ip: base.querySelector('.ip').value,
+                        port: base.querySelector('.port').value,
+                        username: base.querySelector('.username').value,
+                        password: base.querySelector('.password').value
+                    });
+                }
+            }
+            config.hvHost = document.getElementById('hvHost').value;
+            config.hvPort = document.getElementById('hvPort').value;
+
             try {
                 const response = await fetch('/api/config', {
                     method: 'POST',
@@ -29,19 +40,54 @@
             }
         }
 
+        function addCameraConfig() {
+            const container = document.getElementById('camerasContainer');
+            const num = container.children.length;
+            const div = document.createElement('div');
+            div.setAttribute('id', `camera${num}`);
+            div.classList.add('camera-config');
+            div.innerHTML = `
+                <h3>Telecamera #${num + 1}</h3>
+                <label>IP: <input type="text" class="ip" /></label><br/>
+                <label>Porta: <input type="text" class="port" value="80" /></label><br/>
+                <label>Utente: <input type="text" class="username" /></label><br/>
+                <label>Password: <input type="password" class="password" /></label><br/>
+                <button onclick="removeCameraConfig(${num})">Rimuovi</button>
+                <hr/>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeCameraConfig(num) {
+            const div = document.getElementById(`camera${num}`);
+            if (div) div.remove();
+        }
+
         async function loadConfig() {
             try {
                 const response = await fetch('/api/config');
                 if (response.ok) {
                     const config = await response.json();
-                    document.getElementById('cameraIP').value = config.cameraIP || '';
-                    document.getElementById('cameraPort').value = config.cameraPort || '';
+                    const container = document.getElementById('camerasContainer');
+                    container.innerHTML = '';
+                    if (config.cameras && Array.isArray(config.cameras)) {
+                        config.cameras.forEach((cam, i) => {
+                            addCameraConfig();
+                            const base = document.getElementById(`camera${i}`);
+                            base.querySelector('.ip').value = cam.ip || '';
+                            base.querySelector('.port').value = cam.port || '80';
+                            base.querySelector('.username').value = cam.username || '';
+                            base.querySelector('.password').value = cam.password || '';
+                        });
+                    } else {
+                        addCameraConfig();
+                    }
                     document.getElementById('hvHost').value = config.hvHost || '';
                     document.getElementById('hvPort').value = config.hvPort || '';
                 } else {
                     alert('Errore nel caricamento della configurazione');
                 }
-            } catch (error) {
+            } catch {
                 alert('Errore nella comunicazione con il server');
             }
         }
@@ -62,24 +108,17 @@
         </nav>
     </header>
     <main>
-        <section>
-            <h2>Configurazione Telecamere</h2>
-            <label for="cameraIP">IP Telecamera:</label><br>
-            <input type="text" id="cameraIP" placeholder="192.168.1.101"><br><br>
-            <label for="cameraPort">Porta:</label><br>
-            <input type="number" id="cameraPort" placeholder="8080"><br><br>
-        </section>
+        <section id="camerasContainer" class="camera-config"></section>
+        <button onclick="addCameraConfig()">Aggiungi Telecamera</button>
+        <hr/>
         <section>
             <h2>Configurazione Fotovoltaico Huawei</h2>
-            <label for="hvHost">IP Host Huawei:</label><br>
-            <input type="text" id="hvHost" placeholder="192.168.1.50"><br><br>
-            <label for="hvPort">Porta Modbus:</label><br>
-            <input type="number" id="hvPort" placeholder="502"><br><br>
+            <label for="hvHost">IP Host Huawei:</label><br/>
+            <input type="text" id="hvHost" placeholder="192.168.1.50" /><br/>
+            <label for="hvPort">Porta Modbus:</label><br/>
+            <input type="text" id="hvPort" placeholder="502" /><br/>
         </section>
         <button onclick="saveConfig()">Salva Configurazione</button>
     </main>
-    <footer>
-        <p>© 2025 Sistema di monitoraggio personalizzato</p>
-    </footer>
 </body>
 </html>
