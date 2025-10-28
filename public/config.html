@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurazione Sistema</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function saveConfig() {
+            const cameraIP = document.getElementById('cameraIP').value;
+            const cameraPort = document.getElementById('cameraPort').value;
+            const hvHost = document.getElementById('hvHost').value;
+            const hvPort = document.getElementById('hvPort').value;
+            alert(`Configurazione salvata:\nTelecamera: ${cameraIP}:${cameraPort}\nHuawei: ${hvHost}:${hvPort}`);
+            // In futuro si può salvare via API backend o localStorage
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Configurazione Sistema</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dvr.html">DVR Telecamere ONVIF</a></li>
+                <li><a href="photovoltaic.html">Monitoraggio Fotovoltaico</a></li>
+                <li><a href="config.html" class="active">Configurazione</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Configurazione Telecamere</h2>
+            <label for="cameraIP">IP Telecamera:</label><br>
+            <input type="text" id="cameraIP" placeholder="192.168.1.101"><br><br>
+            <label for="cameraPort">Porta:</label><br>
+            <input type="number" id="cameraPort" placeholder="8080"><br><br>
+        </section>
+        <section>
+            <h2>Configurazione Fotovoltaico Huawei</h2>
+            <label for="hvHost">IP Host Huawei:</label><br>
+            <input type="text" id="hvHost" placeholder="192.168.1.50"><br><br>
+            <label for="hvPort">Porta Modbus:</label><br>
+            <input type="number" id="hvPort" placeholder="502"><br><br>
+        </section>
+        <button onclick="saveConfig()">Salva Configurazione</button>
+    </main>
+    <footer>
+        <p>© 2025 Sistema di monitoraggio personalizzato</p>
+    </footer>
+</body>
+</html>
