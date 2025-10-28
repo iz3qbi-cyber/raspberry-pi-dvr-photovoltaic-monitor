@@ -6,14 +6,47 @@
     <title>Configurazione Sistema</title>
     <link rel="stylesheet" href="style.css">
     <script>
-        function saveConfig() {
-            const cameraIP = document.getElementById('cameraIP').value;
-            const cameraPort = document.getElementById('cameraPort').value;
-            const hvHost = document.getElementById('hvHost').value;
-            const hvPort = document.getElementById('hvPort').value;
-            alert(`Configurazione salvata:\nTelecamera: ${cameraIP}:${cameraPort}\nHuawei: ${hvHost}:${hvPort}`);
-            // In futuro si può salvare via API backend o localStorage
+        async function saveConfig() {
+            const config = {
+                cameraIP: document.getElementById('cameraIP').value,
+                cameraPort: document.getElementById('cameraPort').value,
+                hvHost: document.getElementById('hvHost').value,
+                hvPort: document.getElementById('hvPort').value
+            };
+            try {
+                const response = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+                if (response.ok) {
+                    alert('Configurazione salvata con successo');
+                } else {
+                    alert('Errore nel salvataggio della configurazione');
+                }
+            } catch (error) {
+                alert('Errore nella comunicazione con il server');
+            }
         }
+
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/config');
+                if (response.ok) {
+                    const config = await response.json();
+                    document.getElementById('cameraIP').value = config.cameraIP || '';
+                    document.getElementById('cameraPort').value = config.cameraPort || '';
+                    document.getElementById('hvHost').value = config.hvHost || '';
+                    document.getElementById('hvPort').value = config.hvPort || '';
+                } else {
+                    alert('Errore nel caricamento della configurazione');
+                }
+            } catch (error) {
+                alert('Errore nella comunicazione con il server');
+            }
+        }
+
+        window.onload = loadConfig;
     </script>
 </head>
 <body>
