@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVR Telecamere ONVIF</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/onvif@0.1.18/dist/onvif.min.js"></script> <!-- Libreria ONVIF Javascript ipotetica -->
+    <script src="dvr.js"></script>
+</head>
+<body>
+    <header>
+        <h1>DVR Telecamere ONVIF</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dvr.html" class="active">DVR Telecamere ONVIF</a></li>
+                <li><a href="photovoltaic.html">Monitoraggio Fotovoltaico</a></li>
+                <li><a href="config.html">Configurazione</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Telecamere Rilevate</h2>
+            <button onclick="scanCameras()">Scansiona Telecamere ONVIF</button>
+            <div id="cameraList"></div>
+        </section>
+        <section>
+            <h2>Visualizzazione Live</h2>
+            <div id="liveStream"></div>
+        </section>
+        <section>
+            <h2>Registrazioni</h2>
+            <div id="recordings"></div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Sistema di monitoraggio personalizzato</p>
+    </footer>
+</body>
+</html>
