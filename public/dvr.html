@@ -19,7 +19,11 @@
         </nav>
     </header>
     <main>
-        <div id="cameraGrid"></div>
+        <div class="camera-controls">
+            <button onclick="loadCameras()">Aggiorna Telecamere</button>
+            <button onclick="toggleFullscreen()">Modalità Schermo Intero</button>
+        </div>
+        <div id="cameraGrid" class="camera-grid"></div>
     </main>
 </body>
 </html>
