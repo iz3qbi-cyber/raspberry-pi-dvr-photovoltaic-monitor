@@ -1,0 +1,41 @@
+{
+  "name": "raspberry-pi-dvr-photovoltaic-monitor",
+  "version": "2.0.0",
+  "description": "Sistema completo di monitoraggio DVR ONVIF e impianto fotovoltaico Huawei SUN2000-10KTL-M1 con analisi pannello per pannello e calcolo costi Octopus Italia",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "install-global": "npm install -g nodemon pm2"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-onvif": "^0.1.4",
+    "jsmodbus": "^4.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "raspberry-pi",
+    "dvr",
+    "onvif",
+    "huawei",
+    "solar",
+    "photovoltaic",
+    "modbus",
+    "sun2000",
+    "monitoring",
+    "octopus",
+    "energy"
+  ],
+  "author": "Giulio Zen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iz3qbi-cyber/raspberry-pi-dvr-photovoltaic-monitor.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
